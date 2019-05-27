@@ -8,7 +8,7 @@ import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 
-let path = "http://my-env.c6x2ggbux3.ap-northeast-2.elasticbeanstalk.com/";
+let path = "ws://my-env.c6x2ggbux3.ap-northeast-2.elasticbeanstalk.com/";
 if (path.match("localhost")) path = "http://localhost:5000";
 
 const socket = io.connect(path);
