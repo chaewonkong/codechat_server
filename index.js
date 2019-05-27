@@ -4,15 +4,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const path = require("path");
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/build")));
-}
-
 app.use(express.static(path.join(__dirname, "client/build")));
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
-});
 
 io.on("connection", socket => {
   const { id } = socket.client;
@@ -25,6 +17,10 @@ io.on("connection", socket => {
     io.emit("code", { nickname, code });
   });
   socket.on("disconnect", () => console.log(`User disconnected`));
+});
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;
