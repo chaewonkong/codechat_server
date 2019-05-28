@@ -2,11 +2,8 @@ import React, { Component } from "react";
 import { Input, Button, Layout } from "antd";
 import styled from "styled-components";
 import CommentCard from "../../Components/Comment";
-import Editor from "react-simple-code-editor";
 import io from "socket.io-client";
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
+import Code from "../../Components/Code";
 
 let path = "http://my-env.c6x2ggbux3.ap-northeast-2.elasticbeanstalk.com/";
 if (path.match("localhost")) path = "http://localhost:5000";
@@ -49,11 +46,9 @@ export default class Chat extends Component {
     });
   }
 
-  handleCodeInput({ code }) {
+  onCodeChange({ code }) {
     const { nickname } = this.state;
-    // this.setState({
-    //   code
-    // });
+    this.setState({ code });
     socket.emit("code", { code, nickname });
   }
 
@@ -75,17 +70,10 @@ export default class Chat extends Component {
       <Container>
         <ConA>
           <CodeBox>
-            <Editor
-              value={this.state.code}
-              onValueChange={code => this.handleCodeInput({ code })}
-              highlight={code => highlight(code, languages.js)}
-              padding={14}
-              style={{
-                fontFamily: '"Fira code", "Fira Mono", monospace',
-                fontSize: 16,
-                height: "100%",
-                lineHeight: "1rem"
-              }}
+            <Code
+              code={this.state.code}
+              nickname={this.state.nickname}
+              onCodeChange={this.onCodeChange.bind(this)}
             />
           </CodeBox>
           <ChatBox>{this.renderComments()}</ChatBox>
